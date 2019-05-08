@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis中的映射文件:内部要定义sql映射 -->
+<mapper namespace="com.jt.sys.dao.SysLogDao">
+  
+   <!-- sql标签用于定义映射元素中的sql共性,
+       其它元素用到此元素时,可以 include包含-->
+   <sql id="queryWhereId">
+       <where>
+         <if test="username!=null and username!=''">
+           username like concat("%",#{username},"%")       
+         </if>
+       </where>
+   </sql>
+  
+   <select id="findPageObjects"
+           resultType="com.jt.sys.entity.SysLog">
+           select *
+           from sys_logs
+           <include refid="queryWhereId"/>
+           limit #{startIndex},#{pageSize}
+   </select>
+
+   <select id="getRowCount"
+           resultType="int">
+           select count(*)
+           from sys_logs
+           <include refid="queryWhereId"/>
+   </select>
+   
+</mapper>
